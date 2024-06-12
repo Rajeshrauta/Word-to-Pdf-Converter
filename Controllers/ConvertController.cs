@@ -91,6 +91,10 @@ namespace WordToPdfConvertor.Controllers
 
             try
             {
+                string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
+                if (string.IsNullOrEmpty(originalFileName))
+                    originalFileName = "Rotated";
+
                 using (MemoryStream outputStream = new MemoryStream())
                 {
                     using (PdfDocument originalDocument = PdfReader.Open(file.OpenReadStream(), PdfDocumentOpenMode.Import))
@@ -112,7 +116,7 @@ namespace WordToPdfConvertor.Controllers
 
                     var fileContentResult = new FileContentResult(fileBytes, "application/pdf")
                     {
-                        FileDownloadName = "rotated_output.pdf"
+                        FileDownloadName = $"{originalFileName}_{rotationDirection}_Rotated.pdf"
                     };
 
                     return fileContentResult;
