@@ -19,6 +19,10 @@ namespace WordToPdfConvertor.Controllers
 
             try
             {
+                string originalFileName = Path.GetFileNameWithoutExtension(file.FileName);
+                if (string.IsNullOrEmpty(originalFileName))
+                    originalFileName = "converted";
+
                 // Load the DOCX file into the DocumentCore
                 DocumentCore dc;
                 using (var ms = new MemoryStream())
@@ -61,7 +65,7 @@ namespace WordToPdfConvertor.Controllers
                     pdfDocument.Save(outputPdfStream);
                     outputPdfStream.Position = 0;
 
-                    return File(outputPdfStream.ToArray(), "application/pdf", "converted.pdf");
+                    return File(outputPdfStream.ToArray(), "application/pdf", $"{originalFileName}.pdf");
 
                 }
             }
